@@ -215,7 +215,7 @@ const Inp = styled.input`
 const Btext = styled.div`
     
     font-size: 16px;
-    color: white;
+    color: #f7f2f2;
 `
 
 const InpBtn = styled.div`
