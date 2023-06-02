@@ -183,6 +183,9 @@ const GlobalStyles = createGlobalStyle`
   body {
     width: 100%;
     height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     overflow-x: hidden;
     background-image: linear-gradient(100deg, #42275a, #734b6d);
   }
@@ -194,8 +197,6 @@ const Gcontainer = styled.div`
     height: 700px;
     background: #1b1b1b;
     border-radius: 5px;
-    transform: translateY(100px);
-    margin: auto auto;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -559,7 +560,7 @@ const Follower = styled.h1`
     @media (max-width:490px) {
 
     width: 100px;
-    height: 30px;
+    height: 25px;
     font-size: 16px;
     }
 `
@@ -581,7 +582,7 @@ const Following = styled.h1`
     @media (max-width:490px) {
 
     width: 100px;
-    height: 30px;
+    height: 25px;
     font-size: 16px;
     }
 `
@@ -639,7 +640,6 @@ const ContainerOne = styled.div`
     width: 160px;
     height: 70px;
     }
-
 `
 
 const ContainerSec = styled.div`
@@ -649,11 +649,4 @@ const ContainerSec = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 10px;
-
-    @media (max-width:1000px) {
-
-    width: 160px;
-    height: 70px;
-    }
-
 `
