@@ -1,5 +1,5 @@
 import styled, { createGlobalStyle } from "styled-components";
-import { useState, useRef } from "react";
+import { useState } from "react";
 
 function GithubFinder() {
 
@@ -11,16 +11,15 @@ function GithubFinder() {
     const [Follow, setFollower] = useState<string>("");
     const [Followings, setFollowing] = useState<string>("");
     const [turn, setTurn] = useState<boolean>(false);
-    const InpRef = useRef<HTMLInputElement>(null)
-    
+    const [appear, setAppear] = useState<boolean>(false)
+
     const ClickHandler = (e: any) => {
         setUserName(e.target.value)
     }
     
+
     const Submit = async (e: any) => {
         e.preventDefault();
-
-        const InputRef = InpRef.current!;
 
         const Profile = await fetch(`https://api.github.com/users/${username}`)
         const ProfileJson = await Profile.json()
@@ -32,6 +31,7 @@ function GithubFinder() {
         const Foler = ProfileJson.followers;
         const Foling = ProfileJson.following;
 
+        console.log(Profile)
 
         setProfileImg(ProfPic)
         setName(Name)
@@ -43,11 +43,12 @@ function GithubFinder() {
         if (Profile.ok) {
 
             setTurn(true)
+            setAppear(false)
         } else {
             setTurn(false);
-            InputRef.value = '';
-        }
-
+            setAppear(true)
+        } 
+        
     }
 
     const LInkOpener = () => {
@@ -64,8 +65,8 @@ return (
   <Gcontainer>
 
     <InpContainer>
-
-        <Inp  className="Input" ref={InpRef}  type="text" placeholder="Enter Profile" value={username} onChange={ClickHandler}/>
+        
+        <Inp  className="Input"   type="text" placeholder="Enter Profile" value={username} onChange={ClickHandler}/>
 
         <InpBtn typeof="submit" onClick={Submit}>
             <Btext>
@@ -132,6 +133,19 @@ return (
     :
 
     null
+    
+    }
+
+
+    {appear
+    
+    ?
+    
+    <Error>Profile Not Found</Error>
+
+    :
+
+    null
     }
 
 
@@ -149,7 +163,7 @@ export default GithubFinder;
 
 const GlobalStyles = createGlobalStyle`
 
-  @import url('https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@200;300;400;600;700;900&display=swap');
+  @import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@100;200;300;400;500;600;700&display=swap');
 
   :root {
     font-synthesis: none;
@@ -163,7 +177,7 @@ const GlobalStyles = createGlobalStyle`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Source Serif Pro', serif;
+    font-family: 'Roboto Mono', monospace;
   }
   
   body {
@@ -187,6 +201,20 @@ const Gcontainer = styled.div`
     align-items: center;
     gap: 30px;
     padding: 20px 0px;
+
+    @media (max-width:1000px) {
+
+        width: 400px;
+        height: 600px;
+        gap: 25px;
+    }
+
+    @media (max-width:490px) {
+
+    width: 320px;
+    height: 500px;
+    gap: 20px;
+    }
 `
 
 const InpContainer = styled.div`
@@ -196,6 +224,16 @@ const InpContainer = styled.div`
     border-radius: 2px;
     display: flex;
     align-items: center;
+
+    @media (max-width:1000px) {
+
+    width: 300px;
+    }
+
+    @media (max-width:490px) {
+
+    width: 260px;
+    }
 `
 
 const Inp = styled.input`
@@ -210,12 +248,36 @@ const Inp = styled.input`
     outline: none;
     font-size: 18px;
     padding: 0px 10px;
+
+
+    @media (max-width:1000px) {
+
+    width: 250px;
+    font-size: 15px;
+    }
+
+    @media (max-width:490px) {
+
+    width: 220px;
+    font-size: 11px;
+    }
 `
 
 const Btext = styled.div`
     
     font-size: 16px;
-    color: #f7f2f2;
+    color: white;
+
+    @media (max-width:1000px) {
+
+    font-size: 13px;
+    }
+
+    @media (max-width:490px) {
+
+    font-size: 9px;
+    letter-spacing: 0.5px;
+    }
 `
 
 const InpBtn = styled.div`
@@ -233,6 +295,16 @@ const InpBtn = styled.div`
     &:hover {
         background: #0000a7;
     }
+
+    @media (max-width:1000px) {
+
+    width: 50px;
+    }
+
+    @media (max-width:490px) {
+    
+    width: 40px;
+    }
 `
 
 const ProfilePic = styled.img`
@@ -240,16 +312,59 @@ const ProfilePic = styled.img`
     width: 120px;
     height: 120px;
     border-radius: 50%;
+
+    @media (max-width:1000px) {
+
+    width: 100px;
+    height: 100px;
+    }
+
+    @media (max-width:490px) {
+
+    width: 80px;
+    height: 80px;
+    }
 `
 
 const Name = styled.h1`
     
-    width: 220px;
+    width: 250px;
     font-size: 22px;
     font-weight: 500;
     color: white;
     letter-spacing: 1px;
     text-align: center;
+
+    @media (max-width:1000px) {
+
+    width: 220px;
+    font-size: 18px;
+    } 
+
+    @media (max-width:490px) {
+    
+    width: 200px;
+    font-size: 15px;
+    }
+`
+
+const Error = styled.h1`
+    
+    font-size: 38px;
+    letter-spacing: 1px;
+    font-weight: 600;
+    margin-top: 20px;
+    color: red;
+
+    @media (max-width:1000px) {
+
+    font-size: 32px;
+    }
+
+    @media (max-width:490px) {
+
+    font-size: 28px;
+    }
 `
 
 const Detail = styled.div`
@@ -260,6 +375,17 @@ const Detail = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 20px;
+
+    @media (max-width:1000px) {
+
+    height: 500px;
+    gap: 10px;
+    }
+
+    @media (max-width:490px) {
+    
+    height: 500px;
+    }
 `
 
 const Link = styled.h1`
@@ -269,6 +395,16 @@ const Link = styled.h1`
     color: white;
     user-select: none;
     transition: all 0.2s ease-in;
+
+    @media (max-width:1000px) {
+
+    font-size: 16px;
+    }
+
+    @media (max-width:490px) {
+    
+    font-size: 14px;
+    }
 `
 
 const Cont = styled.div`
@@ -290,6 +426,7 @@ const Cont = styled.div`
             color: black;
         }
     }
+
 `
 
 const RepName = styled.h1`
@@ -298,6 +435,16 @@ const RepName = styled.h1`
     color: white;
     letter-spacing: 1px;
     margin-top: 30px;
+
+    @media (max-width:1000px) {
+
+    font-size: 18px;
+    }
+
+    @media (max-width:490px) {
+
+    font-size: 16px;
+    }
 `
 
 const Repo = styled.div`
@@ -312,6 +459,18 @@ const Repo = styled.div`
     font-size: 32px;
     letter-spacing: 2px;
     color: white;
+
+    @media (max-width:1000px) {
+
+    height: 40px;
+    font-size: 24px;
+    }
+
+    @media (max-width:490px) {
+
+    height: 35px;
+    font-size: 20px;
+    }
 `
 
 const FollList = styled.div`
@@ -321,6 +480,18 @@ const FollList = styled.div`
     display: flex;
     justify-content: space-around;
     margin-top: 50px;
+
+    @media (max-width:1000px) {
+
+    height: 80px;
+    margin-top: 40px;
+    }
+
+    @media (max-width:490px) {
+
+    height: 60px;
+    margin-top: 30px;
+    }
 `
 
 const ChapOne = styled.div`
@@ -332,6 +503,18 @@ const ChapOne = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+
+    @media (max-width:1000px) {
+
+    width: 120px;
+    height: 50px;
+    }
+
+    @media (max-width:490px) {
+
+    width: 100px;
+    height: 40px;
+    }
 `
 
 const ChapTwo = styled.div`
@@ -343,15 +526,42 @@ const ChapTwo = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
+
+    @media (max-width:1000px) {
+
+    width: 120px;
+    height: 50px;
+    }
+
+    @media (max-width:490px) {
+
+    width: 100px;
+    height: 40px;
+    }
 `
 
 const Follower = styled.h1`
+
     width: 150px;
     height: 40px;
     color: white;
     letter-spacing: 1px;
     text-align: center;
     font-size: 20px;
+
+    @media (max-width:1000px) {
+
+    width: 120px;
+    height: 30px;
+    font-size: 18px;
+    }
+
+    @media (max-width:490px) {
+
+    width: 100px;
+    height: 30px;
+    font-size: 16px;
+    }
 `
 
 const Following = styled.h1`
@@ -361,6 +571,19 @@ const Following = styled.h1`
     letter-spacing: 1px;
     text-align: center;
     font-size: 20px;
+    @media (max-width:1000px) {
+
+    width: 120px;
+    height: 30px;
+    font-size: 18px;
+    }
+
+    @media (max-width:490px) {
+
+    width: 100px;
+    height: 30px;
+    font-size: 16px;
+    }
 `
 
 const NumFollower = styled.h1`
@@ -369,6 +592,18 @@ const NumFollower = styled.h1`
     letter-spacing: 1px;
     font-size: 28px;
     text-align: center;
+
+    @media (max-width:1000px) {
+
+    width: 80px;
+    font-size: 24px;
+    }
+
+    @media (max-width:490px) {
+
+    width: 60px;
+    font-size: 20px;
+    }
 `
 
 const NumFollowing = styled.h1`
@@ -377,6 +612,18 @@ const NumFollowing = styled.h1`
     letter-spacing: 1px;
     font-size: 28px;
     text-align: center;
+
+    @media (max-width:1000px) {
+
+    width: 80px;
+    font-size: 24px;
+    }
+
+    @media (max-width:490px) {
+
+    width: 60px;
+    font-size: 20px;
+    }
 `
 
 const ContainerOne = styled.div`
@@ -386,6 +633,13 @@ const ContainerOne = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 10px;
+
+    @media (max-width:1000px) {
+
+    width: 160px;
+    height: 70px;
+    }
+
 `
 
 const ContainerSec = styled.div`
@@ -395,4 +649,11 @@ const ContainerSec = styled.div`
     flex-direction: column;
     align-items: center;
     gap: 10px;
+
+    @media (max-width:1000px) {
+
+    width: 160px;
+    height: 70px;
+    }
+
 `
